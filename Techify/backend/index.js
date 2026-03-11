@@ -3,6 +3,7 @@ import path from 'path';
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import userRoutes from "./routes/userRoutes.js"
 
 // utils
 import connectDB from "./config/db.js";
@@ -21,9 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // routes
-app.get("/", (req, res) => {
-  res.send("Hello Buddy");
-});
+app.use("/api/users", userRoutes);
 
 // server
 app.listen(port, () => {
