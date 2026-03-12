@@ -1,23 +1,63 @@
-// Import Express framework
+// Import Express
 import express from "express";
 
-// Import controller functions for user registration and login
-import { createUser, loginUser } from "../controllers/userController.js";
+// Import user controller functions
+import { 
+    createUser, 
+    loginUser, 
+    logoutCurrentUser, 
+    getAllUsers, 
+    getCurrentUserProfile, 
+    updateCurrentUserProfile, 
+    deleteUserById, 
+    getUserById, 
+    updateUserById
+} from "../controllers/userController.js";
 
-// Create a router instance from Express
-// Router helps organize routes in separate files
+// Import authentication & authorization middleware
+import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
+
+// Create router instance
 const router = express.Router();
 
 
-// Route: POST /api/users
-// This route is used to REGISTER a new user
-router.route('/').post(createUser);
+// =======================
+// AUTH ROUTES
+// =======================
 
+// Register user
+router.route('/')
+    .post(createUser)
+    .get(authenticate, authorizeAdmin, getAllUsers); // Admin: get all users
 
-// Route: POST /api/users/auth
-// This route is used to LOGIN an existing user
+// Login
 router.post('/auth', loginUser);
 
+// Logout
+router.post('/logout', logoutCurrentUser);
 
-// Export router so it can be used in the main server file (server.js / app.js)
+
+// =======================
+// PROFILE ROUTES
+// =======================
+
+// Logged-in user profile
+router
+    .route('/profile')
+    .get(authenticate, getCurrentUserProfile)
+    .put(authenticate, updateCurrentUserProfile);
+
+
+// =======================
+// ADMIN USER MANAGEMENT
+// =======================
+
+router
+    .route('/:id')
+    .delete(authenticate, authorizeAdmin, deleteUserById)
+    .get(authenticate, authorizeAdmin, getUserById)
+    .put(authenticate, authorizeAdmin, updateUserById);
+
+
+// Export router
 export default router;

@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@700;800&display=swap');
+
+#techify-text {
+  font-family: 'Outfit', sans-serif;
+
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+
+  position: relative;
+  display: inline-block;
+
+  background: linear-gradient(90deg, #08c0ae, #6a6a8d, #5a737d);
+  background-size: 200% 100%;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  text-shadow: 0 2px 8px rgba(236, 72, 153, 0.25);
+
+  opacity: 0;
+  transform: translateY(10px);
+
+  transition: all 0.2s ease;
+
+  animation: techifyGradientReverse 4s linear infinite;
+}
+
+
+
+#navigation-container.group:hover #techify-text,
+#navigation-container.translate-x-0 #techify-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes techifyGradientReverse {
+  0% { background-position: 200% 50%; }
+  100% { background-position: 0% 50%; }
+}

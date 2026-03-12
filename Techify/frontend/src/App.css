@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+*{
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: bold;
+  user-select: none;
+}
+/* 🔥 Force white close icon */
+.Toastify__close-button {
+  color: white !important;
+  opacity: 0.9;
+}
+
+/* hover effect */
+.Toastify__close-button:hover {
+  color: #ec4899 !important; /* pink */
+  opacity: 1;
+}
+
+/* SVG inside button */
+.Toastify__close-button svg {
+  fill: white !important;
+  stroke: white !important;
+}
+
+/* ensure path is visible */
+.Toastify__close-button svg path {
+  fill: white !important;
+  stroke: white !important;
+}
