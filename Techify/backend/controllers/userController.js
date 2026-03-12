@@ -86,9 +86,9 @@ const loginUser = asyncHandler(async(req, res) => {
     if(existingUser){
 
         // Compare entered password with hashed password in database
-        const isPasswordVaild = await bcrypt.compare(password, existingUser.password);
+        const isPasswordValid = await bcrypt.compare(password, existingUser.password);
 
-        if(isPasswordVaild){
+        if(isPasswordValid){
 
             // Generate JWT token and store in cookie
             createToken(res, existingUser._id);
@@ -108,6 +108,21 @@ const loginUser = asyncHandler(async(req, res) => {
 
 });
 
+const logoutCurrentUser = asyncHandler(async (req,res) => {
+    res.cookie('jwt', '' ,{
+        httpOnly: true,
+        expires: new Date(0),
+
+    })
+    res.status(200).json({message: "Logged out suceessfully"});
+})
+
+const getAllUsers = asyncHandler(async (req, res) => {
+    const users = await User.find({}).select("-password");
+    res.json(users);
+})
+
+
 
 // Export controllers so they can be used in routes
-export { createUser,  loginUser };
+export { createUser,  loginUser, logoutCurrentUser, getAllUsers };
