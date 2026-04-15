@@ -11,8 +11,13 @@ export default defineConfig({
   },
   plugins: [react()],
   server: {
+    watch: {
+      usePolling: true,
+      interval: 100
+    },
     proxy : {
       "/api/" : "http://localhost:5000",
+      "/uploads": "http://localhost:5000"
     }
   }
 })

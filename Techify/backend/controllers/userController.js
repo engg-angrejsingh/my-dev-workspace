@@ -42,7 +42,7 @@ const createUser = asyncHandler(async (req, res) => {
     await newUser.save();
 
     // Create auth token
-    createToken(res, newUser._id);
+    const token = createToken(res, newUser._id);
 
     res.status(201).json({
       _id: newUser._id,
@@ -50,6 +50,7 @@ const createUser = asyncHandler(async (req, res) => {
       email: newUser.email,
       password: newUser.password,
       isAdmin: newUser.isAdmin,
+      token: token,
     });
   } catch (error) {
     res.status(400);
@@ -78,7 +79,7 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 
   
-  createToken(res, existingUser._id);
+  const token = createToken(res, existingUser._id);
 
  
   res.status(200).json({
@@ -86,6 +87,7 @@ const loginUser = asyncHandler(async (req, res) => {
     username: existingUser.username,
     email: existingUser.email,
     isAdmin: existingUser.isAdmin,
+    token: token,
   });
 });
 

@@ -8,7 +8,8 @@ import {
   AiOutlineMenu,
   AiOutlineClose,
   AiOutlineDashboard,
-  AiOutlineTable,
+  AiOutlineDatabase,
+  AiOutlinePlusCircle,
   AiOutlineAppstore,
   AiOutlineOrderedList,
   AiOutlineUsergroupAdd,
@@ -21,6 +22,7 @@ import { useLogoutMutation } from "../../redux/api/usersApiSlice";
 import { logout } from "../../redux/features/auth/authSlice";
 
 import "./Navigation.css";
+import FavoritesCount from "../Products/FavoritesCount";
 
 function Navigation() {
   const { userInfo } = useSelector((state) => state.auth);
@@ -54,13 +56,13 @@ function Navigation() {
     <>
       {/* 📱 MOBILE TOGGLE BUTTON */}
       <button
-        className="fixed top-5 right-5 z-[1001] p-2 bg-slate-900 text-white rounded-lg lg:hidden border border-slate-700"
+        className="fixed top-5 right-5 z-[1001] p-2 bg-[#030712] text-white rounded-lg lg:hidden border border-slate-700"
         onClick={() => setShowSidebar(!showSidebar)}
       >
         {showSidebar ? (
-          <AiOutlineClose size={24} />
+          <AiOutlineClose size={20} />
         ) : (
-          <AiOutlineMenu size={24} />
+          <AiOutlineMenu size={20} />
         )}
       </button>
 
@@ -77,12 +79,12 @@ function Navigation() {
         id="navigation-container"
         className={`
           fixed left-0 top-0 h-screen z-[999] transition-all duration-300 ease-in-out text-white 
-          bg-gradient-to-b from-slate-900 via-slate-950 to-black
+          bg-gradient-to-b from-[#030712] via-slate-950 to-black
           border-r border-slate-800 flex flex-col group
           ${showSidebar ? "translate-x-0 w-[250px]" : "-translate-x-full lg:translate-x-0 lg:w-[75px] lg:hover:w-[220px]"}
         `}
       >
-        {/* INNER WRAPPER (Handles Scrolling on small screens) */}
+        {/* INNER WRAPPER */}
         <div className="flex flex-col h-full p-4">
           {/* 🔥 LOGO */}
           <div className="text-center mt-2 lg:mt-4 mb-10 flex-shrink-0 flex items-center justify-center">
@@ -116,9 +118,14 @@ function Navigation() {
                 hover: "hover:text-green-500",
               },
               {
-                to: "/favorite",
-                icon: <FaHeart size={22} />,
-                label: "Favorite",
+                to: "/favourite",
+                icon: (
+                  <div className="relative flex items-center justify-center">
+                    <FaHeart size={22} />
+                    <FavoritesCount />
+                  </div>
+                ),
+                label: "Favourites",
                 hover: "hover:text-red-500",
               },
             ].map((link) => (
@@ -140,10 +147,9 @@ function Navigation() {
               </Link>
             ))}
 
-            {/* 🛠️ ADMIN LINKS (Icons always visible like Home) */}
+            {/* 🛠️ ADMIN LINKS */}
             {userInfo && userInfo.isAdmin && (
               <div className="flex flex-col space-y-2 mt-4">
-                {/* Horizontal Line: Only shows on hover/mobile open */}
                 <div
                   className={`border-t border-slate-800 mb-2 transition-opacity duration-300 ${showSidebar ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
                 ></div>
@@ -161,9 +167,14 @@ function Navigation() {
                     label: "Dashboard",
                   },
                   {
+                    to: "/admin/allproducts",
+                    icon: <AiOutlineDatabase size={22} />, // Updated Icon
+                    label: "All Products",
+                  },
+                  {
                     to: "/admin/productlist",
-                    icon: <AiOutlineTable size={22} />,
-                    label: "Products",
+                    icon: <AiOutlinePlusCircle size={22} />, // Updated Icon
+                    label: "Add Product",
                   },
                   {
                     to: "/admin/categorylist",
@@ -204,20 +215,17 @@ function Navigation() {
 
           {/* 👤 AUTHENTICATION SECTION */}
           <div className="mt-auto flex flex-col flex-shrink-0 pt-6 pb-4">
-            {/* Horizontal Line: Only shows on hover/mobile open */}
             <div
               className={`border-t border-slate-800 mb-4 transition-opacity duration-300 ${showSidebar ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
             ></div>
 
             {userInfo ? (
               <div className="flex flex-col gap-2">
-                {/* Profile Link */}
                 <Link
                   to="/profile"
                   onClick={() => setShowSidebar(false)}
                   className="flex items-center gap-4 text-gray-400 hover:text-blue-600 hover:translate-x-2 transition-all duration-300 py-2"
                 >
-                  {/* 🟢 ICON REPLACEMENT: Using FaRegUserCircle */}
                   <div className="min-w-[40px] flex justify-center items-center">
                     {userInfo.image ? (
                       <div className="h-8 w-8 rounded-full overflow-hidden border border-slate-600 shadow-lg">
@@ -242,7 +250,6 @@ function Navigation() {
                   </span>
                 </Link>
 
-                {/* Logout Button */}
                 <button
                   onClick={logoutHandler}
                   className="flex items-center gap-4 text-gray-400 hover:text-red-500 hover:translate-x-2 transition-all duration-300 py-2 w-full text-left"
